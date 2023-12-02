@@ -6,7 +6,6 @@ file = '/Users/dhayes/Documents/scripts/adventCal-2023/day1/day1-input.txt'
 with open(file, "r") as f:
     lines = f.read().splitlines()
 
-
 def get_total(lines):
 
     list_nums= []
