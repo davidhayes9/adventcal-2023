@@ -1,3 +1,4 @@
+from audioop import reverse
 from pprint import pprint
 import copy
 
@@ -6,7 +7,14 @@ file = '/Users/dhayes/Documents/scripts/adventCal-2023/day1/day1-input.txt'
 with open(file, "r") as f:
     lines = f.read().splitlines()
 
-def get_total(lines):
+def get_total(*args):
+
+    if len(args) == 2:
+        lines = args[0]
+        reverse_lines = args[1]
+    else:
+        lines = args[0]
+        reverse_lines = args[0]
 
     list_nums= []
     list_reverse_nums =[]
@@ -16,7 +24,7 @@ def get_total(lines):
             if j.isdigit():
                 list_nums.insert(i,j)
                 break
-        for j in list(reversed(lines[i])):
+        for j in list(reversed(reverse_lines[i])):
             if j.isdigit():
                 list_reverse_nums.insert(i,j)
                 break
@@ -33,16 +41,26 @@ print(get_total(lines))
 valid_digits = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
 
 copy_lines = copy.deepcopy(lines)
+copy_lines_rev = copy.deepcopy(lines)
 
-# replace words with digits 
-for i in range(len(copy_lines)):
-    string = copy_lines[i]
-    for ii in range(len(copy_lines[i])+1):
-        #print(lines[i][:ii])
-        for j in range(len(valid_digits)):
-            if valid_digits[j] in copy_lines[i][:ii]:
-                #print(valid_digits[j])
-                copy_lines[i] = copy_lines[i].replace(valid_digits[j], str(j+1)) 
+reverse_flag = 0
 
-#pprint(copy_lines)
-print(get_total(copy_lines))
+def word_to_digit(copy_lines, reverse_flag):
+    # replace words with digits 
+    for i in range(len(copy_lines)):
+        flag = 0
+        for ii in range(len(copy_lines[i])+1):
+            for j in range(len(valid_digits)):
+                if reverse_flag == 0:
+                    if valid_digits[j] in copy_lines[i][:ii] and flag == 0:
+                        flag = 1
+                        copy_lines[i] = copy_lines[i].replace(valid_digits[j], str(j+1))
+                if reverse_flag == 1:
+                    if ii != 0:
+                        if valid_digits[j] in copy_lines[i][-ii:] and flag == 0:
+                            flag = 1
+                            copy_lines[i] = copy_lines[i].replace(valid_digits[j], str(j+1))
+
+word_to_digit(copy_lines, 0)
+word_to_digit(copy_lines_rev, 1)
+print(get_total(copy_lines, copy_lines_rev))
