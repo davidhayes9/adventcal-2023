@@ -1,7 +1,5 @@
 from pprint import pprint
 
-from netaddr import P
-
 file = '/Users/dhayes/Documents/scripts/adventCal-2023/day4/day4-input.txt'
 
 with open(file, "r") as f:
